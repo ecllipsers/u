@@ -178,7 +178,7 @@ if len(sys.argv) > 2:
 		arg = arg.lower()  # ignore case for diacritic words
 		if arg in modifw:
 			arg = modifw[arg]
-		if not combining(arg):
+		if len(arg) != 1 or not combining(arg):
 			sys.stderr.write('Invalid diacritic provided: {}\n'.format(arg))
 			sys.exit(2)
 		res += arg
