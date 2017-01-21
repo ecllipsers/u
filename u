@@ -1,0 +1,263 @@
+#!/usr/bin/env python3.6
+
+# MIT License
+#
+# Copyright (c) 2017 Royce Dascalu
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import sys
+from unicodedata import normalize, name, combining
+from re import split
+
+symbols = {
+	'SS': '§', 'sect': '§',            # section symbol, aka silcrow
+	'oc': '©', 'oC': '©',
+	'or': '®', 'oR': '®',
+	'tm': '™', 'TM': '™',
+	'x': '×',
+	'chk': '✓', 'CHK': '✓',
+	'v': '✓',
+	'X': '✗',
+	'gbp': '£', 'GBP': '£', 'pound': '£',
+	'eur': '€', 'EUR': '€', 'euro': '€',
+	'yen': '¥', 'Yen': '¥',
+	'jpy': '¥', 'JPY': '¥',
+	'usd': '$', 'USD': '$', 'dollar': '$',
+	'cur': '¤', 'CUR': '¤',
+	'cent': '¢',
+	'deg': '°', 'DEG': '°',
+	'par': '¶', 'PAR': '¶',
+	'%0': '‰', 'pm': '‰', 'PM': '‰',
+	'bullet': '•',
+	'ditto': '″',
+	'approx': '≈',
+	'~=': '≅',
+	'not': '¬',
+	'i?': '¿',
+	'i!': '¡',
+	'/s': '⸮',
+	'^0': '⁰',
+	'^1': '¹',
+	'^2': '²',
+	'^3': '³',
+	'^4': '⁴',
+	'^5': '⁵',
+	'^6': '⁶',
+	'^7': '⁷',
+	'^8': '⁸',
+	'^9': '⁹'
+}
+
+# List and names from https://en.wikipedia.org/wiki/Combining_character
+modifw = {
+	'grave': '\u0300',                                                          # à / À
+	'acute': '\u0301',                                                          # á / Á
+	'circumflex': '\u0302', 'hat': '\u0302', 'roof': '\u0302',                  # â / Â
+	    'house': '\u0302',
+	'tilde': '\u0303',                                                          # ã / Ã
+	'macron': '\u0304',                                                         # ā / Ā
+	'breve': '\u0306', 'vrachy': '\u0306', 'brachy': '\u0306',                  # ă / Ă
+	'overdot': '\u0307', 'odot': '\u0307',                                      # ȧ / Ȧ
+	'umlaut': '\u0308', 'diaereis': '\u0308', 'trema': '\u0308',                # ä / Ä
+	    'dieresis': '\u0308',
+	'hookabove': '\u0309', 'ohook': '\u0309', 'overhook': '\u0309',             # ả / Ả (Vietnamese)
+	'overring': '\u030A', 'ring': '\u030A',                                     # å / Å
+	'doubleacute': '\u030B', 'dacute': '\u030B', 'hungarumlaut': '\u030B',      # a̋ / A̋
+	'caron': '\u030C', 'wedge': '\u030C', 'ihat': '\u030C', 'hacek': '\u030C',  # ǎ / Ǎ
+	    'hachek': '\u030C', 'icircumflex': '\u030C', 'invertedhat': '\u030C',
+	'doublegrave': '\u030F', 'dgrave': '\u030F',                                # ȁ / Ȁ
+	'invertedbreve': '\u0311', 'ibreve': '\u0311', 'arch': '\u0311',            # ȃ / Ȃ
+	'overcomma': '\u0313', 'ocomma': '\u0313', 'smoothbreathing': '\u0313',     # ἀ / Ἀ (Greek)
+	'rovercomma': '\u0314', 'rocomma': '\u0314', 'roughbreathimg': '\u0314',    # ῥ (Greek)
+	'horn': '\u031B',                                                           # ơ / Ơ (Vietnamese)
+	'palatalhook': '\u0321', 'phook': '\u0321',                                 # ᶎ / ᶁ (IPA use)
+	'retroflexhook': '\u0322', 'rhook': '\u0322',                               # ʐ / ᶒ (IPA use)
+	'underdot': '\u0323', 'udot': '\u0323',                                     # ạ / Ạ
+	'underring': '\u0325',                                                      # ḁ / Ḁ
+	'cedilla': '\u0327', 'cedille': '\u0327', 'cedilha': '\u0327',              # a̧ / A̧
+	'ogonek': '\u0328', 'nosine': '\u0328',                                     # ą / Ą
+	'underbar': '\u0331', 'bmacron': '\u0331', 'umacron': '\u0331',             # a̱ / A̱
+	'underline': '\u0332', 'underscore': '\u0332',                              # a̲ / A̲
+	'hbar': '\u0335', 'stroke': '\u0335', 'shortstroke': '\u0335',              # ̵q / ̵Q
+	'lhbar': '\u0336', 'lstroke': '\u0336', 'longstroke': '\u0336',             # ̶q / ̶Q
+	    'strikethrough': '\u0336',
+	'slash': '\u0337', 'solidus': '\u0337', 'shortsolidus': '\u0337',           # ̷q / ̷Q
+	'lslash': '\u0338', 'lsolidus': '\u0337', 'longsolidus': '\u0338',          # ̸q / ̸Q
+	'undercomma': '\u0326', 'bcomma': '\u0326', 'ucomma': '\u0326',             # a̦ / A̦
+	'perispomeni': '\u0342',                                                    # ᾶ (Greek)
+	'iota': '\u0345', 'ypomegrameni': '\u0345'                                  # ᾳ / ῳ (Greek)
+}
+
+# Diacritic escape codes using LaTeX naming (with some additions)
+modifc = {
+	'`': '\u0300',                  # ò   grave
+	'\'': '\u0301',                 # ó   acute
+	'^': '\u0302',                  # ô   circumflex
+	'~': '\u0303',                  # õ   tilde
+	'=': '\u0304', '-': '\u0304',   # ō   macron
+	'u': '\u0306',                  # ŏ   breve
+	'.': '\u0307',                  # ȯ   dot over
+	'"': '\u0308',                  # ö   umlaut
+	'r': '\u030A', 'o': '\u030A',   # å   ring over
+	'H': '\u030B',                  # ő   Hungarian umlaut
+	'v': '\u030C',                  # š   caron / háček
+	'd': '\u0323',                  # ụ   dot under
+	',': '\u0326',                  # ș   comma under
+	'c': '\u0327',                  # ç   cedilla
+	'k': '\u0328',                  # ą   ogonek
+	'b': '\u0332', '_': '\u0332',   # o̲   bar under (underline)
+}
+
+# Display help / documentation if requested
+if any(i in sys.argv[1:] for i in ['-h', '--help', '-?', '/?']):
+	with open('uhelp.txt', 'r') as hlp:
+		sys.stdout.write(hlp.read())
+	sys.exit(0)
+elif '--show' in sys.argv[1:]:
+	f = lambda d: sorted(d.items(), key = lambda t: t[1])
+	print('Diacritic words (case insensitive):')
+	print('\n'.join('{0:18} {1}'.format(c[0], name(c[1])) for c in f(modifw)))
+	print('\nDiacritic symbols (LaTeX naming):')
+	print('\n'.join('{0:18} {1}'.format(c[0], name(c[1])) for c in f(modifc)))
+	print('\nList of supported, regular symbols:')
+	print('\n'.join('{0[0]:18} {0[1]}'.format(s) for s in f(symbols)))
+	sys.exit(0)
+
+# Get options
+cnt = 0
+options = {'--noprecomb': False, 'p': False,
+           '--nolatex': False,   'l': False,
+           '--nosymbol': False,  's': False,
+           '--nocomb': False,    'c': False,
+           '--nortrim': False,   'r': False}
+for opt in sys.argv[1:]:
+	if opt.startswith('--'):
+		if opt in options:
+			options[opt] = True
+			c += 1
+			continue
+	elif opt.startswith('-') and all(c in options for c in opt[1:]):
+		for c in opt[1:]:
+			options[c] = True
+			cnt += 1
+		continue
+	break
+sys.argv[1:] = sys.argv[(cnt + 1):]
+
+clatex  = not (options['--nolatex'] or options['l'])  # check LaTeX
+csymbol = not (options['--nosymbol'] or options['s']) # check symbols
+ccomb   = not (options['--nocomb'] or options['c'])   # try to combine chars
+csubstr = not (options['--nortrim'] or options['r'])  # check substrings
+
+# Function to find precombined versions of characters with diacritics
+tryprecomb = lambda s: normalize('NFC', s)
+if options['--noprecomb'] or options['p']:
+	tryprecomb = lambda s: s
+
+# Diacritic words provided, convert, combine and return
+if len(sys.argv) > 2:
+	res = sys.argv[1]
+	for arg in sys.argv[2:]:
+		arg = arg.lower()  # ignore case for diacritic words
+		if arg in modifw:
+			arg = modifw[arg]
+		if not combining(arg):
+			sys.stderr.write('Invalid diacritic provided: {}\n'.format(arg))
+			sys.exit(2)
+		res += arg
+	sys.stdout.write(tryprecomb(res))
+	sys.exit(0)
+
+if clatex:
+	from latexToUnicode import texmap
+
+# Functions
+def combine(s):
+	"""Converts the provided string to a character with diacritics."""
+	res = s[-1]
+	s = s[:-1]
+	for c in reversed(s):
+		if c in modifc:
+			res += modifc[c]
+		else:
+			return ''
+	return tryprecomb(res)
+
+def convstr(s):
+	"""Convert and return s by LaTeX / symbol table lookup or with combine()."""
+	if clatex:
+		if s in texmap:
+			return texmap[s]
+		elif ('\\' + s) in texmap:
+			return texmap['\\' + s]
+	if csymbol and s in symbols:
+		return symbols[s]
+	if ccomb:
+		return combine(s)
+	return ''
+
+def rred(s):
+	""""
+	Right trims s until a successful conversion is found. Returns the conversion
+	substituted into the converted part if one is found, or s if not,
+	together with a value indicating success or failure.
+	"""
+	word = s
+	if csubstr:
+		while len(word) > 0:
+			res = convstr(word)
+			if res != '' and res != word:         # ensures '\axxx' -/-> 'axxx'
+				return res + s[len(word):], True  # substituted part + remaining
+			word = word[:-1]
+	else:
+		res = convstr(word)
+		if res != '' and res != word:
+			return res, True
+	return s, False
+
+def wordred(s):
+	"""Attempts a conversion of s and returns it if successful."""
+	if len(s) < 2 or s[0] != '\\':
+		return s
+	if s[1] == '\\': # backslash was escaped, so no combination
+		return s
+	res, suc = rred(s[1:])
+	if suc:
+		return res
+	return '\\' + res
+
+def worddiv(s):
+	"""Splits a string by '\', reduces each part and returns the joined parts"""
+	spt = split(r'(\\+)', s) # split by any number >0 of '\'
+	words = spt[:1] + [a + b for a, b in zip(*[iter(spt[1:])] * 2)]
+	return ''.join([wordred(w) for w in words])
+
+# If a single argument was provided, convert it
+if len(sys.argv) == 2:
+	sys.stdout.write(rred(sys.argv[1])[0])
+	sys.exit(0)
+
+# No command line arguments, so read stdin
+for line in sys.stdin:
+	# temporary solution for the lack of universal line support
+	# in python in bash on Windows:
+	line = line.rstrip('\r\n') # -> '\n'
+	print(' '.join(worddiv(w) for w in line.split(' ')))
+sys.exit(0)

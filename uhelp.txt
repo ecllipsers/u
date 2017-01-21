@@ -1,0 +1,33 @@
+﻿u is a tool used to query Unicode characters.
+
+Usage:
+  u [options]
+  u [-p | --noprecomb] <char> [diacritic ...]
+  u [options] (<LaTeX> | <symbol> | <string>)
+
+Arguments:
+  char        Any single character to be combined with diacritics
+  diacritic   A word representing a diacritic or a combining Unicode character.
+              Use --showdiac for a list of words.
+  LaTeX       A LaTeX control sequence, with or without leading '\'
+  symbol      A word representing a symbol (e.g. 'deg' for a degree symbol)
+  string      A string of diacritic symbols (using LaTeX naming) ending
+              in a character to combine them with.
+
+Options:
+  -p, --noprecomb          precombined characters are not preferred
+  -l, --nolatex            no checking for LaTeX commands
+  -s, --nosymbol           no checking for symbols
+  -c, --nocomb             no combining characters
+  -r, --nortrim            only convert whole strings (e.g. '\betas' would not
+                           become 'βs')
+  --show                   displays all diacritic words and symbols and exits
+  -h, --help, -?, /?       displays this help and exits
+
+Examples:
+  u                        Converts all escaped strings from stdin as above
+                           and outputs everything to stdout
+  u o umlaut underring     Outputs: ö̥
+  u alpha                  Outputs: α
+  u eur                    Outputs: €
+  u -a                     Outputs: ā
