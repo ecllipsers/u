@@ -106,6 +106,7 @@ modifw = {
 }
 
 # Diacritic escape codes using LaTeX naming (with some additions)
+# List from https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Escaped_codes
 modifc = {
 	'`': '\u0300',                  # ò   grave
 	'\'': '\u0301',                 # ó   acute
@@ -245,9 +246,9 @@ def wordred(s):
 
 def worddiv(s):
 	"""Splits a string by '\', reduces each part and returns the joined parts"""
-	spt = split(r'(\\+)', s) # split by any number >0 of '\'
+	spt = split(r'(\\+)', s)     # split by any number >0 of '\'
 	words = spt[:1] + [a + b for a, b in zip(*[iter(spt[1:])] * 2)]
-	return ''.join([wordred(w) for w in words])
+	return ''.join(wordred(w) for w in words)
 
 # If a single argument was provided, convert it
 if len(sys.argv) == 2:
@@ -257,7 +258,7 @@ if len(sys.argv) == 2:
 # No command line arguments, so read stdin
 for line in sys.stdin:
 	# temporary solution for the lack of universal line support
-	# in python in bash on Windows:
+	# in python in bash on Windows (though it thinks it does):
 	line = line.rstrip('\r\n') # -> '\n'
 	print(' '.join(worddiv(w) for w in line.split(' ')))
 sys.exit(0)
