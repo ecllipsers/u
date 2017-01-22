@@ -152,7 +152,7 @@ for opt in sys.argv[1:]:
 	if opt.startswith('--'):
 		if opt in options:
 			options[opt] = True
-			c += 1
+			cnt += 1
 			continue
 	elif opt.startswith('-') and all(c in options for c in opt[1:]):
 		for c in opt[1:]:
