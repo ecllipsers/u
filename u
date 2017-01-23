@@ -148,7 +148,6 @@ elif '--show' in sys.argv[1:]:
 	sys.exit(0)
 
 # Get options
-cnt = 0
 options = {
 	'--noprecomb': False, 'p': False,
 	'--nolatex': False, 'l': False,
@@ -156,6 +155,7 @@ options = {
 	'--nocomb': False, 'c': False,
 	'--nortrim': False, 'r': False
 }
+cnt = 0
 for opt in sys.argv[1:]:
 	if opt.startswith('--'):
 		if opt in options:
@@ -163,7 +163,7 @@ for opt in sys.argv[1:]:
 			cnt += 1
 			continue
 	elif opt.startswith('-') and all(c in options for c in opt[1:]):
-		# Only set options if all letter are options, otherwise the string is
+		# Only set options if all letters are options, otherwise the string is
 		# a regular argument (e.g. 'u -cro' is valid, but -o isn't an option).
 		for c in opt[1:]:
 			options[c] = True
@@ -189,7 +189,7 @@ else:
 if len(sys.argv) > 2:
 	res = sys.argv[1]
 	for arg in sys.argv[2:]:
-		arg = arg.lower()  # ignore case for diacritic words
+		arg = arg.lower()  # Ignore case for diacritic words
 		if arg in modifw:
 			arg = modifw[arg]
 		if len(arg) != 1 or not combining(arg):
@@ -241,8 +241,8 @@ def rred(s: str) -> str:
 	if csubstr:
 		while len(word) > 0:
 			res = convstr(word)
-			if res is not None and res != word:   # ensures '\axxx' -/-> 'axxx'
-				return res + s[len(word):], True  # converted + remaining part
+			if res is not None and res != word:   # Ensures '\axxx' -/-> 'axxx'
+				return res + s[len(word):], True  # Converted + remaining part
 			word = word[:-1]
 	else:
 		res = convstr(word)
@@ -253,22 +253,21 @@ def rred(s: str) -> str:
 
 def wordred(s: str) -> str:
 	"""Attempts to convert s and returns it."""
-	# Filter non-escaped and double-escaped strings.
+	# Filter non-escaped and double-escaped strings
 	if not s.startswith('\\') or s.startswith('\\\\'):
 		return s
 	res, suc = rred(s[1:])
 	if suc:
 		return res
-	return '\\' + res
+	return s
 
 
 def worddiv(s: str) -> str:
 	"""Divides a string into escaped substrings and attempts to
-	reduce each one, before rejoining them and returning the result
+	reduce each one, before rejoining them and returning the result.
 	"""
-	spt = split(r'(\\+)', s)     # split by any number >0 of '\'
-	# Prepend the backslashes to their respective words.
-	words = spt[:1] + [a + b for a, b in zip(*[iter(spt[1:])] * 2)]
+	# Split by any number of '\' (e.g. 'a\b\\c' -> ['a', '\b', '', '\\c', ''])
+	words = split(r'(\\+[^\\]*)', s)
 	return ''.join(wordred(w) for w in words)
 
 # If a single argument was provided, convert it
@@ -278,8 +277,6 @@ if len(sys.argv) == 2:
 
 # No command line arguments, so read stdin
 for line in sys.stdin:
-	# temporary solution for the lack of universal line support
-	# in python in bash on Windows (though it thinks it does):
-	line = line.rstrip('\r\n')  # -> '\n'
+	line = line.rstrip('\r\n')  # -> '\n' with universal newline support
 	print(' '.join(worddiv(w) for w in line.split(' ')))
 sys.exit(0)
