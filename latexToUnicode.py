@@ -12,8 +12,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -554,7 +554,7 @@ texmap = {
 	'\\cyrchar\\CYRUK': '\u0478',
 	'\\cyrchar\\CYRUSHRT': '\u040e',
 	'\\cyrchar\\CYRV': '\u0412',
-	'\\cyrchar\\CYRY': '\u04ae',
+	'\\cyrchar\\CYRU': '\u04ae',
 	'\\cyrchar\\CYRYA': '\u042f',
 	'\\cyrchar\\CYRYAT': '\u0462',
 	'\\cyrchar\\CYRYHCRS': '\u04b0',
@@ -648,7 +648,7 @@ texmap = {
 	'\\cyrchar\\cyruk': '\u0479',
 	'\\cyrchar\\cyrushrt': '\u045e',
 	'\\cyrchar\\cyrv': '\u0432',
-	'\\cyrchar\\cyry': '\u04af',
+	'\\cyrchar\\cyru': '\u04af',
 	'\\cyrchar\\cyrya': '\u044f',
 	'\\cyrchar\\cyryhcrs': '\u04b1',
 	'\\cyrchar\\cyryi': '\u0457',

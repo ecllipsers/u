@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 # MIT License
 #
@@ -11,8 +11,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -67,46 +67,51 @@ symbols = {
 
 # List and names from https://en.wikipedia.org/wiki/Combining_character
 modifw = {
-	'grave': '\u0300',                                                          # à / À
-	'acute': '\u0301',                                                          # á / Á
-	'circumflex': '\u0302', 'hat': '\u0302', 'roof': '\u0302',                  # â / Â
-	    'house': '\u0302',
-	'tilde': '\u0303',                                                          # ã / Ã
-	'macron': '\u0304',                                                         # ā / Ā
-	'breve': '\u0306', 'vrachy': '\u0306', 'brachy': '\u0306',                  # ă / Ă
-	'overdot': '\u0307', 'odot': '\u0307',                                      # ȧ / Ȧ
-	'umlaut': '\u0308', 'diaereis': '\u0308', 'trema': '\u0308',                # ä / Ä
-	    'dieresis': '\u0308',
-	'hookabove': '\u0309', 'ohook': '\u0309', 'overhook': '\u0309',             # ả / Ả (Vietnamese)
-	'overring': '\u030A', 'ring': '\u030A',                                     # å / Å
-	'doubleacute': '\u030B', 'dacute': '\u030B', 'hungarumlaut': '\u030B',      # a̋ / A̋
-	'caron': '\u030C', 'wedge': '\u030C', 'ihat': '\u030C', 'hacek': '\u030C',  # ǎ / Ǎ
-	    'hachek': '\u030C', 'icircumflex': '\u030C', 'invertedhat': '\u030C',
-	'doublegrave': '\u030F', 'dgrave': '\u030F',                                # ȁ / Ȁ
-	'invertedbreve': '\u0311', 'ibreve': '\u0311', 'arch': '\u0311',            # ȃ / Ȃ
-	'overcomma': '\u0313', 'ocomma': '\u0313', 'smoothbreathing': '\u0313',     # ἀ / Ἀ (Greek)
-	'rovercomma': '\u0314', 'rocomma': '\u0314', 'roughbreathimg': '\u0314',    # ῥ (Greek)
-	'horn': '\u031B',                                                           # ơ / Ơ (Vietnamese)
-	'palatalhook': '\u0321', 'phook': '\u0321',                                 # ᶎ / ᶁ (IPA use)
-	'retroflexhook': '\u0322', 'rhook': '\u0322',                               # ʐ / ᶒ (IPA use)
-	'underdot': '\u0323', 'udot': '\u0323',                                     # ạ / Ạ
-	'underring': '\u0325',                                                      # ḁ / Ḁ
-	'cedilla': '\u0327', 'cedille': '\u0327', 'cedilha': '\u0327',              # a̧ / A̧
-	'ogonek': '\u0328', 'nosine': '\u0328',                                     # ą / Ą
-	'underbar': '\u0331', 'bmacron': '\u0331', 'umacron': '\u0331',             # a̱ / A̱
-	'underline': '\u0332', 'underscore': '\u0332',                              # a̲ / A̲
-	'hbar': '\u0335', 'stroke': '\u0335', 'shortstroke': '\u0335',              # ̵q / ̵Q
-	'lhbar': '\u0336', 'lstroke': '\u0336', 'longstroke': '\u0336',             # ̶q / ̶Q
-	    'strikethrough': '\u0336',
-	'slash': '\u0337', 'solidus': '\u0337', 'shortsolidus': '\u0337',           # ̷q / ̷Q
-	'lslash': '\u0338', 'lsolidus': '\u0337', 'longsolidus': '\u0338',          # ̸q / ̸Q
-	'undercomma': '\u0326', 'bcomma': '\u0326', 'ucomma': '\u0326',             # a̦ / A̦
-	'perispomeni': '\u0342',                                                    # ᾶ (Greek)
-	'iota': '\u0345', 'ypomegrameni': '\u0345'                                  # ᾳ / ῳ (Greek)
+	'grave': '\u0300',                                                  # à / À
+	'acute': '\u0301',                                                  # á / Á
+	'circumflex': '\u0302', 'hat': '\u0302', 'roof': '\u0302',          # â / Â
+	'house': '\u0302',
+	'tilde': '\u0303',                                                  # ã / Ã
+	'macron': '\u0304',                                                 # ā / Ā
+	'breve': '\u0306', 'vrachy': '\u0306', 'brachy': '\u0306',          # ă / Ă
+	'overdot': '\u0307', 'odot': '\u0307',                              # ȧ / Ȧ
+	'umlaut': '\u0308', 'diaereis': '\u0308', 'trema': '\u0308',        # ä / Ä
+	'dieresis': '\u0308',
+	'hookabove': '\u0309', 'ohook': '\u0309',                     # (VNM) ả / Ả
+	'overhook': '\u0309',
+	'overring': '\u030A', 'ring': '\u030A',                             # å / Å
+	'doubleacute': '\u030B', 'dacute': '\u030B',                  # (HUN) a̋ / A̋
+	'hungarumlaut': '\u030B',
+	'caron': '\u030C', 'wedge': '\u030C', 'ihat': '\u030C',             # ǎ / Ǎ
+	'hacek': '\u030C', 'hachek': '\u030C', 'icircumflex': '\u030C',
+	'invertedhat': '\u030C',
+	'doublegrave': '\u030F', 'dgrave': '\u030F',                        # ȁ / Ȁ
+	'invertedbreve': '\u0311', 'ibreve': '\u0311', 'arch': '\u0311',    # ȃ / Ȃ
+	'overcomma': '\u0313', 'ocomma': '\u0313',                    # (GRE) ἀ / Ἀ
+	'smoothbreathing': '\u0313',
+	'rovercomma': '\u0314', 'rocomma': '\u0314',                  # (GRE) ῥ
+	'roughbreathing': '\u0314',
+	'horn': '\u031B',                                             # (VNM) ơ / Ơ
+	'palatalhook': '\u0321', 'phook': '\u0321',                   # (IPA) ᶎ / ᶁ
+	'retroflexhook': '\u0322', 'rhook': '\u0322',                 # (IPA) ʐ / ᶒ
+	'underdot': '\u0323', 'udot': '\u0323',                             # ạ / Ạ
+	'underring': '\u0325',                                              # ḁ / Ḁ
+	'cedilla': '\u0327', 'cedille': '\u0327', 'cedilha': '\u0327',      # a̧ / A̧
+	'ogonek': '\u0328', 'nosine': '\u0328',                             # ą / Ą
+	'underbar': '\u0331', 'bmacron': '\u0331', 'umacron': '\u0331',     # a̱ / A̱
+	'underline': '\u0332', 'underscore': '\u0332',                      # a̲ / A̲
+	'hbar': '\u0335', 'stroke': '\u0335', 'shortstroke': '\u0335',      # ̵q / ̵Q
+	'lhbar': '\u0336', 'lstroke': '\u0336', 'longstroke': '\u0336',     # ̶q / ̶Q
+	'strikethrough': '\u0336',
+	'slash': '\u0337', 'solidus': '\u0337', 'shortsolidus': '\u0337',   # ̷q / ̷Q
+	'lslash': '\u0338', 'lsolidus': '\u0337', 'longsolidus': '\u0338',  # ̸q / ̸Q
+	'undercomma': '\u0326', 'bcomma': '\u0326', 'ucomma': '\u0326',     # a̦ / A̦
+	'perispomeni': '\u0342',                                      # (GRE) ᾶ
+	'iota': '\u0345', 'ypomegrameni': '\u0345'                    # (GRE) ᾳ / ῳ
 }
 
 # Diacritic escape codes using LaTeX naming (with some additions)
-# List from https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Escaped_codes
+# See https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Escaped_codes
 modifc = {
 	'`': '\u0300',                  # ò   grave
 	'\'': '\u0301',                 # ó   acute
@@ -132,22 +137,25 @@ if any(i in sys.argv[1:] for i in ['-h', '--help', '-?', '/?']):
 		sys.stdout.write(hlp.read())
 	sys.exit(0)
 elif '--show' in sys.argv[1:]:
-	f = lambda d: sorted(d.items(), key = lambda t: t[1])
+	def arr(d: dict) -> list:
+		return sorted(d.items(), key=lambda t: t[1])
 	print('Diacritic words (case insensitive):')
-	print('\n'.join('{0:18} {1}'.format(c[0], name(c[1])) for c in f(modifw)))
+	print('\n'.join('{:18} {}'.format(c[0], name(c[1])) for c in arr(modifw)))
 	print('\nDiacritic symbols (LaTeX naming):')
-	print('\n'.join('{0:18} {1}'.format(c[0], name(c[1])) for c in f(modifc)))
+	print('\n'.join('{:18} {}'.format(c[0], name(c[1])) for c in arr(modifc)))
 	print('\nList of supported, regular symbols:')
-	print('\n'.join('{0[0]:18} {0[1]}'.format(s) for s in f(symbols)))
+	print('\n'.join('{:18} {}'.format(*s) for s in arr(symbols)))
 	sys.exit(0)
 
 # Get options
 cnt = 0
-options = {'--noprecomb': False, 'p': False,
-           '--nolatex': False,   'l': False,
-           '--nosymbol': False,  's': False,
-           '--nocomb': False,    'c': False,
-           '--nortrim': False,   'r': False}
+options = {
+	'--noprecomb': False, 'p': False,
+	'--nolatex': False, 'l': False,
+	'--nosymbol': False, 's': False,
+	'--nocomb': False, 'c': False,
+	'--nortrim': False, 'r': False
+}
 for opt in sys.argv[1:]:
 	if opt.startswith('--'):
 		if opt in options:
@@ -155,22 +163,27 @@ for opt in sys.argv[1:]:
 			cnt += 1
 			continue
 	elif opt.startswith('-') and all(c in options for c in opt[1:]):
+		# Only set options if all letter are options, otherwise the string is
+		# a regular argument (e.g. 'u -cro' is valid, but -o isn't an option).
 		for c in opt[1:]:
 			options[c] = True
 			cnt += 1
 		continue
 	break
-sys.argv[1:] = sys.argv[(cnt + 1):]
+sys.argv[1:] = sys.argv[cnt + 1:]
 
-clatex  = not (options['--nolatex'] or options['l'])  # check LaTeX
-csymbol = not (options['--nosymbol'] or options['s']) # check symbols
-ccomb   = not (options['--nocomb'] or options['c'])   # try to combine chars
-csubstr = not (options['--nortrim'] or options['r'])  # check substrings
+clatex = not (options['--nolatex'] or options['l'])
+csymbol = not (options['--nosymbol'] or options['s'])
+ccombin = not (options['--nocomb'] or options['c'])
+csubstr = not (options['--nortrim'] or options['r'])
 
 # Function to find precombined versions of characters with diacritics
-tryprecomb = lambda s: normalize('NFC', s)
 if options['--noprecomb'] or options['p']:
-	tryprecomb = lambda s: s
+	def tryprecomb(s):
+		return s
+else:
+	def tryprecomb(s):
+		return normalize('NFC', s)
 
 # Diacritic words provided, convert, combine and return
 if len(sys.argv) > 2:
@@ -189,8 +202,9 @@ if len(sys.argv) > 2:
 if clatex:
 	from latexToUnicode import texmap
 
+
 # Functions
-def combine(s):
+def combine(s: str) -> str:
 	"""Converts the provided string to a character with diacritics."""
 	res = s[-1]
 	s = s[:-1]
@@ -198,55 +212,62 @@ def combine(s):
 		if c in modifc:
 			res += modifc[c]
 		else:
-			return ''
+			return None
 	return tryprecomb(res)
 
-def convstr(s):
-	"""Convert and return s by LaTeX / symbol table lookup or with combine()."""
+
+def convstr(s: str) -> str:
+	"""Attempt to convert s by LaTeX / symbol table lookup or with
+	combine(). Returns the result if successful and None otherwise.
+	"""
 	if clatex:
 		if s in texmap:
 			return texmap[s]
-		elif ('\\' + s) in texmap:
+		elif '\\' + s in texmap:
 			return texmap['\\' + s]
 	if csymbol and s in symbols:
 		return symbols[s]
-	if ccomb:
+	if ccombin:
 		return combine(s)
-	return ''
+	return None
 
-def rred(s):
-	""""
-	Right trims s until a successful conversion is found. Returns the conversion
-	substituted into the converted part if one is found, or s if not,
-	together with a value indicating success or failure.
+
+def rred(s: str) -> str:
+	""""Right trims s until a successful conversion is found.
+	Substitutes the result into s if successful and returns s
+	with a value indicating success or failure.
 	"""
 	word = s
 	if csubstr:
 		while len(word) > 0:
 			res = convstr(word)
-			if res != '' and res != word:         # ensures '\axxx' -/-> 'axxx'
-				return res + s[len(word):], True  # substituted part + remaining
+			if res is not None and res != word:   # ensures '\axxx' -/-> 'axxx'
+				return res + s[len(word):], True  # converted + remaining part
 			word = word[:-1]
 	else:
 		res = convstr(word)
-		if res != '' and res != word:
+		if res is not None and res != word:
 			return res, True
 	return s, False
 
-def wordred(s):
-	"""Attempts a conversion of s and returns it if successful."""
-	if len(s) < 2 or s[0] != '\\':
-		return s
-	if s[1] == '\\': # backslash was escaped, so no combination
+
+def wordred(s: str) -> str:
+	"""Attempts to convert s and returns it."""
+	# Filter non-escaped and double-escaped strings.
+	if not s.startswith('\\') or s.startswith('\\\\'):
 		return s
 	res, suc = rred(s[1:])
 	if suc:
 		return res
 	return '\\' + res
 
-def worddiv(s):
-	"""Splits a string by '\', reduces each part and returns the joined parts"""
+
+def worddiv(s: str) -> str:
+	"""Divides a string into escaped substrings and attempts to
+	reduce each one, before rejoining them and returning the result
+	"""
 	spt = split(r'(\\+)', s)     # split by any number >0 of '\'
+	# Prepend the backslashes to their respective words.
 	words = spt[:1] + [a + b for a, b in zip(*[iter(spt[1:])] * 2)]
 	return ''.join(wordred(w) for w in words)
 
@@ -259,6 +280,6 @@ if len(sys.argv) == 2:
 for line in sys.stdin:
 	# temporary solution for the lack of universal line support
 	# in python in bash on Windows (though it thinks it does):
-	line = line.rstrip('\r\n') # -> '\n'
+	line = line.rstrip('\r\n')  # -> '\n'
 	print(' '.join(worddiv(w) for w in line.split(' ')))
 sys.exit(0)
