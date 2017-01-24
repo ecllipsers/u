@@ -2134,7 +2134,7 @@ texmap = {
 	'\\truestate': '\u22a7',
 	'\\twoheadleftarrow': '\u219e',
 	'\\twoheadrightarrow': '\u21a0',
-	'\\': '\u0306',
+	'\\': '\u0306',              # Can currently never be reached in stdin mode
 	'\\ulcorner': '\u231c',
 	'\\uparrow': '\u2191',
 	'\\updownarrow': '\u2195',

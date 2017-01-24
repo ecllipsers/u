@@ -25,6 +25,7 @@
 import sys
 from unicodedata import normalize, name, combining
 from re import split
+from string import hexdigits
 
 symbols = {
 	'SS': '§', 'sect': '§',            # section symbol, aka silcrow
@@ -137,7 +138,7 @@ if any(i in sys.argv[1:] for i in ['-h', '--help', '-?', '/?']):
 		sys.stdout.write(hlp.read())
 	sys.exit(0)
 elif '--show' in sys.argv[1:]:
-	def arr(d: dict) -> list:
+	def arr(d):
 		return sorted(d.items(), key=lambda t: t[1])
 	print('Diacritic words (case insensitive):')
 	print('\n'.join('{:18} {}'.format(c[0], name(c[1])) for c in arr(modifw)))
@@ -216,9 +217,21 @@ def combine(s: str) -> str:
 	return tryprecomb(res)
 
 
+def convu(s: str) -> str:
+	"""Attempts to convert an hex string to Unicode."""
+	if s.startswith(('\\u', '\\U')):
+		if len(s) in (6, 10) and all(c in hexdigits for c in s[2:]):
+			return chr(int(s[2:], 16))
+	elif s.startswith(('u', 'U')):
+		if len(s) in (5, 9) and all(c in hexdigits for c in s[1:]):
+			return chr(int(s[1:], 16))
+	return None
+
+
 def convstr(s: str) -> str:
-	"""Attempt to convert s by LaTeX / symbol table lookup or with
-	combine(). Returns the result if successful and None otherwise.
+	"""Attempts to convert s by LaTeX / symbol table lookup, with
+	unicode conversion or combine(). Returns the result if successful
+	and None otherwise.
 	"""
 	if clatex:
 		if s in texmap:
@@ -227,12 +240,15 @@ def convstr(s: str) -> str:
 			return texmap['\\' + s]
 	if csymbol and s in symbols:
 		return symbols[s]
+	uconv = convu(s)
+	if uconv is not None:
+		return uconv
 	if ccombin:
 		return combine(s)
 	return None
 
 
-def rred(s: str) -> str:
+def rred(s: str) -> (str, bool):
 	""""Right trims s until a successful conversion is found.
 	Substitutes the result into s if successful and returns s
 	with a value indicating success or failure.
